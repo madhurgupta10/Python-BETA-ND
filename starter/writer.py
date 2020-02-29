@@ -1,4 +1,5 @@
 from enum import Enum
+import csv
 
 
 class OutputFormat(Enum):
@@ -24,6 +25,7 @@ class NEOWriter(object):
     def __init__(self):
         # TODO: How can we use the OutputFormat in the NEOWriter?
         pass
+        self.output_formats = OutputFormat.list()
 
     def write(self, format, data, **kwargs):
         """
@@ -38,3 +40,19 @@ class NEOWriter(object):
         # TODO: Using the OutputFormat, how can we organize our 'write' logic for output to stdout vs to csvfile
         # TODO: into instance methods for NEOWriter? Write instance methods that write() can call to do the necessary
         # TODO: output format.
+
+    def generate_csv_file(self, data):
+
+        with open("output.csv", "w", newline="") as csvfile:
+
+            writer = csv.DictWriter(csvfile, fieldnames=['name', 'id', 'diameter_min_kilometers',
+                                                         'orbit_dates', 'orbits'])
+
+            writer.writeheader()
+
+            for d in data:
+                writer.writerow({'name': d.name, 'id': d.id, 'diameter_min_kilometers': d.diameter_min_kilometers, 'orbit_dates': [orbit.close_approach_date for orbit in d.orbits], 'orbits': [
+                                orbit.neo_name for orbit in d.orbits]})
+
+    def printer(self, info):
+        print(info)
