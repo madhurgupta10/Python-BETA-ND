@@ -40,18 +40,28 @@ class NEOWriter(object):
         # TODO: Using the OutputFormat, how can we organize our 'write' logic for output to stdout vs to csvfile
         # TODO: into instance methods for NEOWriter? Write instance methods that write() can call to do the necessary
         # TODO: output format.
+        if self.output_formats[0] == format:
+            try:
+                self.printer(data)
+                return True
+            except:
+                return False
+        else:
+            if self.output_formats[1] == format:
+                try:
+                    self.generate_csv(data)
+                    return True
+                except:
+                    return False
+        return False
 
-    def generate_csv_file(self, data):
-
+    def generate_csv(self, data):
         with open("output.csv", "w", newline="") as csvfile:
-
-            writer = csv.DictWriter(csvfile, fieldnames=['name', 'id', 'diameter_min_kilometers',
+            writer = csv.DictWriter(csvfile, fieldnames=['name', 'id', 'diameter_min_km',
                                                          'orbit_dates', 'orbits'])
-
             writer.writeheader()
-
             for d in data:
-                writer.writerow({'name': d.name, 'id': d.id, 'diameter_min_kilometers': d.diameter_min_kilometers, 'orbit_dates': [orbit.close_approach_date for orbit in d.orbits], 'orbits': [
+                writer.writerow({'name': d.name, 'id': d.id, 'diameter_min_km': d.diameter_min_km, 'orbit_dates': [orbit.close_approach_date for orbit in d.orbits], 'orbits': [
                                 orbit.neo_name for orbit in d.orbits]})
 
     def printer(self, info):
