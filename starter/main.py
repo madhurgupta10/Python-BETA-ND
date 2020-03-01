@@ -73,19 +73,23 @@ def verify_output_choice(choice):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Near Earth Objects (NEOs) Database')
+    parser = argparse.ArgumentParser(
+        description='Near Earth Objects (NEOs) Database')
     parser.add_argument('output', choices=OutputFormat.list(), type=verify_output_choice,
                         help='Select option for how to output the search results.')
     parser.add_argument('-r', '--return_object', choices=['NEO', 'Path'],
                         default='NEO', type=str,
                         help='Select entity data to return.')
-    parser.add_argument('-d', '--date', type=verify_date, help='YYYY-MM-DD format to find NEOs on the given date')
+    parser.add_argument('-d', '--date', type=verify_date,
+                        help='YYYY-MM-DD format to find NEOs on the given date')
     parser.add_argument('-s', '--start_date', type=verify_date,
                         help='YYYY-MM-DD format to find NEOs on the provided start date')
     parser.add_argument('-e', '--end_date', type=verify_date,
                         help='YYYY-MM-DD format to find NEOs up to the end date')
-    parser.add_argument('-n', '--number', type=int, help='Int representing max number of NEOs to return')
-    parser.add_argument('-f', '--filename', type=str, help='Name of input csv data file')
+    parser.add_argument('-n', '--number', type=int,
+                        help='Int representing max number of NEOs to return')
+    parser.add_argument('-f', '--filename', type=str,
+                        help='Name of input csv data file')
     parser.add_argument('--filter', nargs='+', help='Select filter options with filter value: '
                                                     'is_hazardous:[=]:bool, '
                                                     'diameter:[>=|=|<=]:float, '
@@ -107,7 +111,8 @@ if __name__ == '__main__':
     try:
         db.load_data()
     except FileNotFoundError as e:
-        print(f'File {var_args.get("filename")} not found, please try another file name.')
+        print(
+            f'File {var_args.get("filename")} not found, please try another file name.')
         sys.exit()
     except Exception as e:
         print(Exception)
@@ -138,4 +143,3 @@ if __name__ == '__main__':
         print('Write successful.')
     else:
         print('Write unsuccessful.')
-

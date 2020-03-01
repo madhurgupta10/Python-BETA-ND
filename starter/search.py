@@ -5,6 +5,7 @@ from exceptions import UnsupportedFeature
 from models import NearEarthObject, OrbitPath
 
 import operator
+import collections
 
 
 class DateSearch(Enum):
@@ -117,7 +118,7 @@ class Filter(object):
         """
 
         # TODO: return a defaultdict of filters with key of NearEarthObject or OrbitPath and value of empty list or list of Filters
-        output = dict(list)
+        output = collections.defaultdict((list))
 
         for f in filter_options:
             afilter = f.split(':')[0]
@@ -141,8 +142,8 @@ class Filter(object):
         output = list()
 
         for my_object in results:
-            value = getattr(my_object, field)
             field = Filter.Options.get(self.field)
+            value = getattr(my_object, field)
             operation = Filter.Operators.get(self.operation)
 
             try:
